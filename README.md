@@ -1,4 +1,7 @@
-## Java project with integration of Database
+## Provivide parameters 
+Provide tenant id, subscription id, client id and client secret
+
+### Java project with integration of Database
 
 Goal: The purpose of this project is to test java application connectivity with AWS RDS(MySQL)
 
