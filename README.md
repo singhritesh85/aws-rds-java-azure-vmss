@@ -1,5 +1,5 @@
 ## Provivide parameters 
-Provide tenant id, subscription id, client id and client secret
+Provide tenant id, subscription id, client id and client secret in the file template.json
 
 ### Java project with integration of Database
 
