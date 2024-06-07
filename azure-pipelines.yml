@@ -47,10 +47,23 @@ stages:
         mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
-    - task: CmdLine@2
-      inputs:
-        script: |
-          /opt/packer plugins install github.com/hashicorp/azure
-          /opt/packer plugins install github.com/hashicorp/ansible
-          chmod +x create-infra.sh
-          sh create-infra.sh
+- stage: Deployment
+  displayName: Deployment
+  dependsOn: Build
+  jobs:
+  - deployment: Deployment
+    displayName: Deployment
+    environment: 'dev'
+    strategy:
+     runOnce:
+       deploy:
+         steps:
+         - checkout: none  
+         - task: CmdLine@2
+           inputs:
+             script: |
+               /opt/packer plugins install github.com/hashicorp/azure
+               /opt/packer plugins install github.com/hashicorp/ansible
+               chmod +x create-infra.sh
+               sh create-infra.sh
+    
