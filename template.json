@@ -1,0 +1,56 @@
+{
+  "builders": [{
+    "type": "azure-arm",
+
+    "tenant_id": "8aXXXXX9-3XX4-XXXX-8769-b6cXXXXXX3ff",
+    "subscription_id": "51XXXXX6-aXX4-XXXX-9a24-f1cXXXXXX15d",
+
+    "client_id": "cXXXXXb0-cXXc-XXXX-a7e7-3abXXXXXXd0e",
+    "client_secret": "RXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXJ",
+    "managed_image_resource_group_name": "ritesh",
+    "managed_image_name": "ReleaseAMI-{{timestamp}}",
+
+    "os_type": "Linux",
+    "image_publisher": "OpenLogic",
+    "image_offer": "CentOS",
+    "image_sku": "7_9-gen2",
+
+    "azure_tags": {
+        "dept": "DevOps",
+        "Environment": "Staging",
+        "Description": "packer-tomcat-{{timestamp}}"
+    },
+
+    "location": "East US",
+    "vm_size": "Standard_B2s",
+    "shared_image_gallery_destination": {
+       "resource_group": "ritesh",
+       "gallery_name": "nhimagegallery",
+       "image_name": "demo",
+       "image_version": "2.0.0"
+    }
+  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./target/LoginWebApp.war",
+      "destination": "/tmp/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum install -y epel-release",
+        "sudo yum install -y ansible"
+      ]
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "playbook.yaml" ,
+      "pause_before": "100s"
+    },
+    {
+      "type": "shell",
+      "inline": [ "sudo cp /tmp/LoginWebApp.war /opt/apache-tomcat-8.5.100/webapps/"]
+    }
+  ]
+}
